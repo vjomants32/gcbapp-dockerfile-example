@@ -17,7 +17,7 @@ spec:
               image: eu.gcr.io/breakwater-development/job/enable-lb-logging:latest
               resources:
                 limits:
-                  cpu: 300m
+                  cpu: 250m
                   memory: 512Mi
                 requests:
                   cpu: 100m
