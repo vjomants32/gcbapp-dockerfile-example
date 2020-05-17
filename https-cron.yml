@@ -1,0 +1,32 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: enable-lb-logging-cronjob
+  namespace: default
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - env:
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /var/secrets/gcp/key.json
+              name: enable-lb-logging
+              image: eu.gcr.io/breakwater-development/job/enable-lb-logging:latest
+              resources:
+                limits:
+                  cpu: 300m
+                  memory: 512Mi
+                requests:
+                  cpu: 100m
+                  memory: 384Mi
+              volumeMounts:
+                - mountPath: /var/secrets/gcp
+                  name: gcp-credentials
+          restartPolicy: Never
+          volumes:
+            - name: gcp-credentials
+              secret:
+                secretName: gcp-credentials
